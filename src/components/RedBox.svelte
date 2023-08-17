@@ -1,37 +1,19 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
-  let area;
-  let observer;
+  export let area: number;
+  let redBox: HTMLDivElement;
 
-  let redBox;
-  const dispatch = createEventDispatcher();
-  const onIntersection = (entries, obs) => {
-    entries.forEach((entry) => {
-      console.log({ entry, isIn: entry.isIntersecting, obs });
-      if (entry.isIntersecting) {
-        const { width, height } = entry.boundingClientRect();
-        console.log({
-          entry,
-          width,
-          height,
-        });
-      }
-    });
-  };
-
-  const setupIntersectionObservers = () => {
-    let options = {
-      root: redBox,
-      threshold: 0.5,
-    };
-    observer = new IntersectionObserver(onIntersection, options);
-    dispatch("init", { observer });
-  };
+  const dispatch = createEventDispatcher<{
+    init: { redBoxRect: DOMRect };
+  }>();
 
   onMount(() => {
-    const bRect = redBox.getBoundingClientRect();
-    area = bRect.width * bRect.height;
-    setupIntersectionObservers();
+    const redBoxRect = redBox.getBoundingClientRect();
+    console.log({ redBoxRect });
+    area = redBoxRect.width * redBoxRect.height;
+    dispatch("init", {
+      redBoxRect,
+    });
   });
 </script>
 
@@ -47,7 +29,6 @@
     height: 500px;
     width: 500px;
     background-color: tomato;
-    position: relative;
   }
   .label {
     color: #666;

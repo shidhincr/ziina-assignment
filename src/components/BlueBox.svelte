@@ -3,17 +3,22 @@
 
   export let left = 0;
   export let top = 0;
-  const dispatch = createEventDispatcher();
+  export let height = 80;
+  export let width = 80;
+  const dispatch = createEventDispatcher<{
+    move: {
+      boxRect: DOMRect;
+    };
+  }>();
 
   let isMoving = false;
-  let boxRef;
+  let boxRef: HTMLElement;
 
   function onMouseDown() {
     isMoving = true;
-    dispatch("move", { target: boxRef });
   }
 
-  function onMouseMove(e) {
+  function onMouseMove(e: MouseEvent) {
     if (isMoving) {
       left += e.movementX;
       top += e.movementY;
@@ -21,14 +26,18 @@
   }
 
   function onMouseUp() {
+    if (isMoving) {
+      dispatch("move", {
+        boxRect: boxRef.getBoundingClientRect(),
+      });
+    }
     isMoving = false;
-    dispatch("stop", {});
   }
 </script>
 
 <section
   on:mousedown={onMouseDown}
-  style="left: {left}px; top: {top}px;"
+  style="left: {left}px; top: {top}px; height: {height}px; width: {width}px"
   class="draggable blue-box"
   bind:this={boxRef}
 >
@@ -41,12 +50,9 @@
   .draggable {
     user-select: none;
     cursor: move;
-    border: solid 1px gray;
     position: absolute;
   }
   .blue-box {
-    height: 100px;
-    width: 100px;
     background-color: navy;
   }
 </style>
