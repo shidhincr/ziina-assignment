@@ -1,24 +1,26 @@
 <script lang="ts">
   import { createEventDispatcher, onMount } from "svelte";
+  import { toBox } from "../lib/transform";
+  import type { Box } from "../types";
   export let area: number;
   let redBox: HTMLDivElement;
 
   const dispatch = createEventDispatcher<{
-    init: { redBoxRect: DOMRect };
+    init: { baseBox: Box; baseBoxEl: HTMLDivElement };
   }>();
 
   onMount(() => {
     const redBoxRect = redBox.getBoundingClientRect();
-    console.log({ redBoxRect });
     area = redBoxRect.width * redBoxRect.height;
     dispatch("init", {
-      redBoxRect,
+      baseBox: toBox(redBoxRect),
+      baseBoxEl: redBox,
     });
   });
 </script>
 
 <section>
-  <div class="red-box" bind:this={redBox} />
+  <div class="red-box" bind:this={redBox}>500x500</div>
   <h4 class="label">
     The visible area of the redbox: <em>{area}</em>
   </h4>
@@ -29,6 +31,9 @@
     height: 500px;
     width: 500px;
     background-color: tomato;
+    display: flex;
+    place-items: center;
+    place-content: center;
   }
   .label {
     color: #666;

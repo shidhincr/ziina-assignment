@@ -4,39 +4,54 @@
   import BlueBox from "./components/BlueBox.svelte";
   import RedBox from "./components/RedBox.svelte";
   import { calculateArea } from "./lib/calculate";
+  import type { Box } from "./types";
+
+  const blueBoxesConfig = [
+    { top: 100, left: 50 },
+    { top: 180, left: 150 },
+    { top: 300, left: 50, height: 100, width: 100 },
+    { top: 300, left: 220, height: 100, width: 80 },
+    { top: 450, left: 150, height: 50, width: 80 },
+  ];
+
   // mediator
   let area = 0;
-  let base;
-  let targets = [];
+  let base: Box;
+  let targets = new Map();
 
-  const initRedBox = (event: ComponentEvents<RedBox>["init"]) => {
-    const { redBoxRect } = event.detail;
-    base = toBox(redBoxRect);
-    console.log({ base });
+  const initBase = (event: ComponentEvents<RedBox>["init"]) => {
+    base = event.detail.baseBox;
   };
-  const updatePositionAndCalculate = (
-    event: ComponentEvents<BlueBox>["move"]
-  ) => {
-    const { boxRect } = event.detail;
-    targets = [toBox(boxRect)];
-    area = calculateArea(base, targets);
+
+  const setTargets = (event: ComponentEvents<BlueBox>["init" | "move"]) => {
+    const { overlayBoxEl, overlayBox } = event.detail;
+    targets.set(overlayBoxEl, overlayBox);
+  };
+
+  const initOverlay = (event: ComponentEvents<BlueBox>["init"]) => {
+    setTargets(event);
+  };
+
+  const updateOverlayPosition = (event: ComponentEvents<BlueBox>["move"]) => {
+    setTargets(event);
+    const overlayBoxes = Array.from(targets.values());
+    area = calculateArea(base, overlayBoxes);
   };
 </script>
 
 <main>
   <div class="simple-grid">
     <div>
-      <BlueBox top={100} left={50} on:move={updatePositionAndCalculate} />
-      <BlueBox
-        top={300}
-        left={50}
-        height={100}
-        width={100}
-        on:move={updatePositionAndCalculate}
-      />
+      {#each blueBoxesConfig as config}
+        <BlueBox
+          {...config}
+          on:move={updateOverlayPosition}
+          on:init={initOverlay}
+        />
+      {/each}
     </div>
     <div>
-      <RedBox on:init={initRedBox} {area} />
+      <RedBox on:init={initBase} {area} />
     </div>
   </div>
 </main>

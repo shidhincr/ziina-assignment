@@ -1,19 +1,29 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
+  import type { Box } from "../types";
+  import { toBox } from "../lib/transform";
 
   export let left = 0;
   export let top = 0;
   export let height = 80;
   export let width = 80;
+
   const dispatch = createEventDispatcher<{
     move: {
-      boxRect: DOMRect;
+      overlayBox: Box;
+      overlayBoxEl: HTMLElement;
     };
   }>();
 
   let isMoving = false;
   let boxRef: HTMLElement;
 
+  function dispatchPosition(eventName = "move") {
+    dispatch(eventName, {
+      overlayBox: toBox(boxRef.getBoundingClientRect()),
+      overlayBoxEl: boxRef,
+    });
+  }
   function onMouseDown() {
     isMoving = true;
   }
@@ -27,12 +37,11 @@
 
   function onMouseUp() {
     if (isMoving) {
-      dispatch("move", {
-        boxRect: boxRef.getBoundingClientRect(),
-      });
+      dispatchPosition();
     }
     isMoving = false;
   }
+  onMount(() => dispatchPosition("init"));
 </script>
 
 <section
@@ -41,7 +50,7 @@
   class="draggable blue-box"
   bind:this={boxRef}
 >
-  <div class="box" />
+  <div class="box">{width}x{height}</div>
 </section>
 
 <svelte:window on:mouseup={onMouseUp} on:mousemove={onMouseMove} />
@@ -54,5 +63,8 @@
   }
   .blue-box {
     background-color: navy;
+    display: flex;
+    place-items: center;
+    place-content: center;
   }
 </style>

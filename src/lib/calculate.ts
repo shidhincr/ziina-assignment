@@ -1,3 +1,5 @@
+import type { Box } from "../types";
+
 export const isIntersecting = (box1: Box, box2: Box) => {
   const hasWidthArea = Math.min(box1.xx, box2.xx) > Math.max(box1.x, box2.x);
   const hasHeightArea = Math.min(box1.yy, box2.yy) > Math.max(box1.y, box2.y);
