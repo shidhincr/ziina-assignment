@@ -7,7 +7,7 @@
   export let top = 0;
   export let height = 80;
   export let width = 80;
-  let zIndex = 0;
+  export let zIndex = 0;
 
   const dispatch = createEventDispatcher<{
     init: {
@@ -43,7 +43,6 @@
   function onMouseUp() {
     if (isMoving) {
       dispatchPosition();
-      zIndex++;
     }
     isMoving = false;
   }

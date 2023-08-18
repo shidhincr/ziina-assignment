@@ -47,6 +47,23 @@ export const deduplicate = (boxes: Box[]): Box[] => {
 }
 
 export const calculateVisibleArea = (base: Box, overlays: Box[]): number => {
+  const intersectingBoxes = overlays.map(oBox => getIntersection(base, oBox)).filter(Boolean) as Box[]
+  console.log({ intersectingBoxes })
+  let area = calculateArea(base);
+  console.log({ base, area })
+  for (let i = base.x; i <= base.xx; i++) {
+    for (let j = base.y; j <= base.yy; j++) {
+      for (let b of intersectingBoxes) {
+        // console.log({ i, j, b })
+        if (i >= b.x && i <= b.xx && j >= b.y && j <= b.yy) area--;
+      }
+    }
+  }
+  console.log({ areaCalculated: area })
+  return area;
+}
+// ----------------------
+export const __calculateVisibleArea = (base: Box, overlays: Box[]): number => {
   const baseArea = calculateArea(base)
   const sum = (arr: number[]) => arr.reduce((acc, cur) => acc + cur, 0);
 
