@@ -1,13 +1,14 @@
 <script lang="ts">
-  import type { ComponentEvents } from "svelte";
-  import { toBox } from "./lib/transform";
   import BlueBox from "./components/BlueBox.svelte";
   import RedBox from "./components/RedBox.svelte";
-  import { calculateArea } from "./lib/calculate";
+  import { calculateVisibleArea } from "./lib/calculate";
+
   import type { Box } from "./types";
+  import type { ComponentEvents } from "svelte";
 
   const blueBoxesConfig = [
     { top: 100, left: 50 },
+    { top: 50, left: 250, height: 200, width: 200 },
     { top: 180, left: 150 },
     { top: 300, left: 50, height: 100, width: 100 },
     { top: 300, left: 220, height: 100, width: 80 },
@@ -35,7 +36,7 @@
   const updateOverlayPosition = (event: ComponentEvents<BlueBox>["move"]) => {
     setTargets(event);
     const overlayBoxes = Array.from(targets.values());
-    area = calculateArea(base, overlayBoxes);
+    area = calculateVisibleArea(base, overlayBoxes);
   };
 </script>
 

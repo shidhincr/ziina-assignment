@@ -31,6 +31,7 @@
     height: 500px;
     width: 500px;
     background-color: tomato;
+    color: #fff;
     display: flex;
     place-items: center;
     place-content: center;

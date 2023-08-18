@@ -9,6 +9,10 @@
   export let width = 80;
 
   const dispatch = createEventDispatcher<{
+    init: {
+      overlayBox: Box;
+      overlayBoxEl: HTMLElement;
+    };
     move: {
       overlayBox: Box;
       overlayBoxEl: HTMLElement;
@@ -18,7 +22,7 @@
   let isMoving = false;
   let boxRef: HTMLElement;
 
-  function dispatchPosition(eventName = "move") {
+  function dispatchPosition(eventName: "move" | "init" = "move") {
     dispatch(eventName, {
       overlayBox: toBox(boxRef.getBoundingClientRect()),
       overlayBoxEl: boxRef,
@@ -63,8 +67,10 @@
   }
   .blue-box {
     background-color: navy;
+    color: #fff;
     display: flex;
     place-items: center;
     place-content: center;
+    box-shadow: 0 0 1px #fff;
   }
 </style>
