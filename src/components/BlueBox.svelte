@@ -7,6 +7,7 @@
   export let top = 0;
   export let height = 80;
   export let width = 80;
+  let zIndex = 0;
 
   const dispatch = createEventDispatcher<{
     init: {
@@ -42,6 +43,7 @@
   function onMouseUp() {
     if (isMoving) {
       dispatchPosition();
+      zIndex++;
     }
     isMoving = false;
   }
@@ -50,7 +52,7 @@
 
 <section
   on:mousedown={onMouseDown}
-  style="left: {left}px; top: {top}px; height: {height}px; width: {width}px"
+  style="left: {left}px; top: {top}px; height: {height}px; width: {width}px; z-index:{zIndex}"
   class="draggable blue-box"
   bind:this={boxRef}
 >

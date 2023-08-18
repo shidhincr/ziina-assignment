@@ -1,12 +1,12 @@
 import type { Box } from "../types";
 
 export const isIntersecting = (box1: Box, box2: Box) => {
-  const hasWidthArea = Math.min(box1.xx, box2.xx) > Math.max(box1.x, box2.x);
-  const hasHeightArea = Math.min(box1.yy, box2.yy) > Math.max(box1.y, box2.y);
-  return hasWidthArea && hasHeightArea
+  const hasWidth = Math.min(box1.xx, box2.xx) > Math.max(box1.x, box2.x);
+  const hasHeight = Math.min(box1.yy, box2.yy) > Math.max(box1.y, box2.y);
+  return hasWidth && hasHeight
 }
 
-export const getIntersectingBoxes = (box1: Box, box2: Box): null | Box => {
+export const getIntersection = (box1: Box, box2: Box): null | Box => {
   if (!isIntersecting(box1, box2)) return null
   return {
     x: Math.max(box1.x, box2.x),
@@ -16,17 +16,17 @@ export const getIntersectingBoxes = (box1: Box, box2: Box): null | Box => {
   }
 }
 
-export const getMutualAreaBoxes = (boxes: Box[]): Box[] => {
+export const getMutuallyIntersectingBoxes = (boxes: Box[]): Box[] => {
   let currentBox: Box;
-  let mutualAreaBoxes: Box[] = []
+  let intersectingBoxes: Box[] = []
   let boxesToIterate = [...boxes]
   while (boxesToIterate.length) {
     currentBox = boxesToIterate.shift()
     boxesToIterate.forEach(box => {
-      mutualAreaBoxes.push(getIntersectingBoxes(currentBox, box))
+      intersectingBoxes.push(getIntersection(currentBox, box))
     });
   }
-  return mutualAreaBoxes.filter(Boolean) as Box[];
+  return intersectingBoxes.filter(Boolean) as Box[];
 }
 
 export const getIntersectingArea = (box1: Box, box2: Box) => {
@@ -51,13 +51,16 @@ export const calculateVisibleArea = (base: Box, overlays: Box[]): number => {
   const sum = (arr: number[]) => arr.reduce((acc, cur) => acc + cur, 0);
 
   const overlappingBoxes = overlays.map(oBox => {
-    return getIntersectingBoxes(base, oBox)
+    return getIntersection(base, oBox)
   }).filter(Boolean) as Box[]
 
-  const mutualAreaBoxes = getMutualAreaBoxes(overlappingBoxes);
-  const mutualArea = sum(mutualAreaBoxes.map(calculateArea))
-  const intersectingArea = sum(overlappingBoxes.map(calculateArea))
-  const intersectingMutualAreaBoxes = deduplicate(getMutualAreaBoxes(mutualAreaBoxes));
+  const totalOverlappingArea = sum(overlappingBoxes.map(calculateArea))
+  const intersectingBoxes = getMutuallyIntersectingBoxes(overlappingBoxes);
+  const intersectingBoxesArea = sum(intersectingBoxes.map(calculateArea))
+
+  console.log({ intersectingBoxes })
+
+  const intersectingMutualAreaBoxes = deduplicate(getMutuallyIntersectingBoxes(intersectingBoxes));
   const intersectingMutualAreaBoxesArea = sum(intersectingMutualAreaBoxes.map(calculateArea));
-  return baseArea - intersectingArea + (mutualArea - intersectingMutualAreaBoxesArea);
+  return baseArea - totalOverlappingArea + (intersectingBoxesArea - intersectingMutualAreaBoxesArea);
 }

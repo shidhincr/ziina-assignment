@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { calculateArea, calculateVisibleArea, isIntersecting, getIntersectingArea, getIntersectingBoxes, getMutualAreaBoxes } from '../lib/calculate'
+import { calculateArea, calculateVisibleArea, isIntersecting, getIntersectingArea, getIntersection, getMutuallyIntersectingBoxes } from '../lib/calculate'
 
 const baseBox = {
   x: 0, y: 0, xx: 100, yy: 100
@@ -38,14 +38,14 @@ test('is intersecting', () => {
 });
 
 test('get intersecting boxes', () => {
-  expect(getIntersectingBoxes(baseBox, overlayBox1)).toBe(null)
-  expect(getIntersectingBoxes(baseBox, overlayBox3)).toEqual({
+  expect(getIntersection(baseBox, overlayBox1)).toBe(null)
+  expect(getIntersection(baseBox, overlayBox3)).toEqual({
     x: 50, y: 50, xx: 100, yy: 100
   });
 });
 
 test('get mutual area boxes', () => {
-  expect(getMutualAreaBoxes(dummyIntersectingBoxes)).toEqual([{
+  expect(getMutuallyIntersectingBoxes(dummyIntersectingBoxes)).toEqual([{
     x: 50, y: 50, xx: 100, yy: 100
   }])
 });
