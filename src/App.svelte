@@ -19,6 +19,7 @@
   let area = 0;
   let base: Box;
   let targets = new Map();
+  let globalZIndex = 0;
 
   const initBase = (event: ComponentEvents<RedBox>["init"]) => {
     base = event.detail.baseBox;
@@ -35,6 +36,7 @@
 
   const updateOverlayPosition = (event: ComponentEvents<BlueBox>["move"]) => {
     setTargets(event);
+    globalZIndex++;
     const overlayBoxes = Array.from(targets.values());
     area = calculateVisibleArea(base, overlayBoxes);
   };
@@ -48,6 +50,7 @@
           {...config}
           on:move={updateOverlayPosition}
           on:init={initOverlay}
+          zIndex={globalZIndex}
         />
       {/each}
     </div>
