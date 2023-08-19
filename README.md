@@ -1,47 +1,89 @@
-# Svelte + TS + Vite
+# Ziina Assignment Solution
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+## About
 
-## Recommended IDE Setup
+This repo contains the solution for the Ziina interview task. It's built using Svelte, Typescript, and Node, with unit tests implemented in Vitest.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## Prerequisites
 
-## Need an official Svelte framework?
+1. **Typescript**: This project is written in Typescript, a strict syntactical superset of JavaScript. Make sure you are familiar with Typescript before jumping onto the code.
+2. **Node.js**: Node.js is required for installing and managing the project's dependencies. 
+3. **PNPM**: This project uses PNPM for installing node modules. However, you are free to use Yarn or NPM if you prefer.
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+## Getting Started
 
-## Technical considerations
+### Setting up the project
 
-**Why use this over SvelteKit?**
+1. **Clone the repository**:
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+   ```
+   git clone git@github.com:shidhincr/ziina-assignment.git
+   cd ziina-assignment
+   ```
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+2. **Install the dependencies**:
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+   Using PNPM:
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+   ```
+   pnpm install
+   ```
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+   Alternatively, you can use Yarn or NPM:
 
-**Why include `.vscode/extensions.json`?**
+   ```
+   yarn install
+   # OR
+   npm install
+   ```
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+### Development Workflow
 
-**Why enable `allowJs` in the TS template?**
+1. **Start the development server**:
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+   ```
+   pnpm dev
+   ```
 
-**Why is HMR not preserving my local component state?**
+   This will start the development server at [http://localhost:5173](http://localhost:5173).
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
+2. **Build for production**:
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+   To generate the production build, run the following command:
 
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+   ```
+   pnpm build
+   ```
+
+   This will create a `dist` folder in your project directory containing the optimized production build. This can be previewed using `pnpm preview`.
+
+3. **Run unit tests**:
+
+   To execute the unit tests, use the following command:
+
+   ```
+   pnpm test
+   ```
+
+   This will run the Vitest suite and display the test results in your terminal.
+
+## Live Demo
+
+The project is hosted on Vercel, a cloud platform for static sites and Serverless Functions. You can access the live demo [here](https://ziina-assignment.vercel.app/).
+
+## Technologies Used
+
+- [Svelte](https://svelte.dev/) - A component framework for building user interfaces.
+- [Typescript](https://www.typescriptlang.org/) - A strict syntactical superset of JavaScript.
+- [Vitejs](https://vitejs.dev/) - A build tool that aims to provide a faster and leaner development experience.
+- [Vitest](https://github.com/vitest-dev/vitest) - A test runner for Vite projects.
+- [Vercel](https://vercel.com/) - A cloud platform for static sites and Serverless Functions.
+
+## Contribution
+
+If you'd like to contribute to this repo, please create a pull request with your changes or contact the repository owner.
+
+## Author
+
+Shidhin CR
+
