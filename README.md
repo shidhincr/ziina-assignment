@@ -79,9 +79,20 @@ The project is hosted on Vercel, a cloud platform for static sites and Serverles
 - [Vitest](https://github.com/vitest-dev/vitest) - A test runner for Vite projects.
 - [Vercel](https://vercel.com/) - A cloud platform for static sites and Serverless Functions.
 
-## Contribution
+## Notes
 
-If you'd like to contribute to this repo, please create a pull request with your changes or contact the repository owner.
+- I initially tried the IntersectionObserver API to find the intersection and calculate the area. However, the original use case of the IntersectionObserver API was not for this purpose, so it became difficult to use that API.
+- My next attempt was to:
+    - Identify the intersecting rectangles.
+    - Calculate the total area of those rectangles.
+    - If they are overlapping each other, subtract that area from the total.
+    - Finally, calculate the total area of the red box and subtract the total area of intersecting rectangles.
+- This was successful, and I wrote extensive unit tests to implement it.
+- However, there appear to be edge cases when multiple blue rectangles overlap on top of the red box. 
+- The calculations became complex, and I sought a simpler approach.
+- Finally, in the latest code, instead of calculating all those intersecting rectangles, I created a Map of all intersecting points.
+- At the same time, I increased a counter to find the total area of the overlapping rectangles.
+- Subtracting this total area from the area of the red box gives the visible area.
 
 ## Author
 
