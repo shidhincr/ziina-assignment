@@ -8,6 +8,7 @@
   export let height = 80;
   export let width = 80;
   export let zIndex = 0;
+  let localZIndex = zIndex;
 
   const dispatch = createEventDispatcher<{
     init: {
@@ -31,6 +32,7 @@
   }
   function onMouseDown() {
     isMoving = true;
+    localZIndex = zIndex + 1;
   }
 
   function onMouseMove(e: MouseEvent) {
@@ -51,7 +53,7 @@
 
 <section
   on:mousedown={onMouseDown}
-  style="left: {left}px; top: {top}px; height: {height}px; width: {width}px; z-index:{zIndex}"
+  style="left: {left}px; top: {top}px; height: {height}px; width: {width}px; z-index:{localZIndex}"
   class="draggable blue-box"
   bind:this={boxRef}
 >
