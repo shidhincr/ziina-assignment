@@ -28,6 +28,10 @@ export const calculateVisibleArea = (base: Box, overlays: Box[]): number => {
 
   for (let b of intersectingBoxes) {
     let { x, y, xx, yy } = b
+    if (overlayMap[`${x},${y}`] && overlayMap[`${xx},${yy}`]) {
+      // This box is already covered by another box
+      continue;
+    }
     for (let i = x; i < xx; i++) {
       for (let j = y; j < yy; j++) {
         if (!overlayMap[`${i},${j}`]) {
